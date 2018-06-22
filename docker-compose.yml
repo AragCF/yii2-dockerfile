@@ -1,0 +1,79 @@
+version: '2'
+services:
+  mariadb:
+    build: ./provision/mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: skringo
+      MYSQL_USER: skringo
+      MYSQL_PASSWORD: skringo
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - './logs/mysql:/var/log/mariadb'
+  redis:
+    build: ./provision/redis
+    restart: always
+    environment:
+      - REDIS_VERSION=4.0.9
+    ports:
+      - '6379:6379'
+    expose:
+      - '6379'
+  nginx:
+    build: ./provision/nginx
+    restart: always
+    links:
+      - php
+    volumes:
+      - './:/app'
+      - './provision/nginx/etc/conf.d/yii2.advanced.template:/etc/nginx/conf.d/site.template'
+      - './logs/nginx:/var/log/nginx'
+    environment:
+      - NGINX_VERSION=1.13.12-1~stretch
+      - NGINX_HOST=skringo.loc
+      - NGINX_PORT=80
+    ports:
+      - '80:80'
+    command: 'sh -c "envsubst \"`env | awk -F = ''{printf \" $$%s\", $$1}''`\" < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g ''daemon off;''"'
+  elasticsearch:
+    build: ./provision/elasticsearch
+    restart: always
+    ports:
+      - '9200:9200'
+    expose:
+      - '9200'
+    environment:
+      - ELASTICSEARCH_VERSION=5.6.9
+      - JAVA_ALPINE_VERSION=8.151.12-r0
+      - JAVA_VERSION=8u151
+      - LANG=C.UTF-8
+  php:
+    build: ./provision/php
+    restart: always
+    links:
+      - mariadb
+      - redis
+      - elasticsearch
+    environment:
+      - XDEBUG_CONFIG=remote_host=192.168.1.109
+      - PHP_IDE_CONFIG=serverName=skringo.loc
+    ports:
+      - '9001:9000'
+    expose:
+      - '9000'
+      - '9001'
+    volumes:
+      - './:/app'
+      - './logs/php7:/var/log/php7'
+      #- './provision/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
+      - './provision/php/xdebug.ini:/etc/php7/conf.d/xdebug.ini'
+      - './logs/php7/xdebug:/tmp/xdebug_log'
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
