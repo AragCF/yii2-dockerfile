@@ -60,7 +60,6 @@ services:
         hard: -1
     mem_limit: 1g
   kibana:
-    image: kibana
     build: ./provision/kibana
     links:
       - elasticsearch
