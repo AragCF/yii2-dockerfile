@@ -1,0 +1,102 @@
+server {
+   charset utf-8;
+   client_max_body_size 128M;
+   sendfile off;
+
+   listen ${NGINX_PORT};
+
+   server_name ${NGINX_HOST};
+   root        /app/app/frontend/web/;
+   index       index.php;
+
+   access_log  /app/logs/nginx/frontend-access.log;
+   error_log   /app/logs/nginx/frontend-error.log;
+
+   location / {
+
+        if (-f $document_root/maintenance.html) {
+            return 503;
+        }
+
+        # CORS - Allow Ajax requests from http to https webservices on the same domain
+        #more_set_headers "Access-Control-Allow-Origin: http://$server_name";
+        #more_set_headers "Access-Control-Allow-Credentials: true";
+        #more_set_headers "Access-Control-Allow-Headers: Authorization";
+
+        # CORS - Allow Ajax calls from cdn/static scripts
+        if ($http_origin ~* "^(http|https)://(img[1234]|cdn|static|cms)\.") {
+          add_header "Access-Control-Allow-Origin" $http_origin;
+        }
+
+        # Terminate OPTIONS requests immediately. No need for calling php
+        # OPTIONS is used by Ajax from http to https as a pre-flight-request
+        # see http://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+        if ($request_method = OPTIONS) {
+            return 200;
+        }
+
+        add_header X-Server $hostname;
+
+       # Redirect everything that isn't a real file to index.php
+       try_files $uri $uri/ /index.php$is_args$args;
+   }
+
+   location ~ /images/\w+/.*?\.(png|jpg|jpeg|gif) {
+       # Redirect everything that isn't a real file to index.php
+       try_files $uri $uri/ /index.php$is_args$args;
+   }
+
+   # uncomment to avoid processing of calls to non-existing static files by Yii
+   #location ~ \.(js|css|png|jpg|jpeg|gif|swf|ico|pdf|mov|fla|zip|rar)$ {
+   #    try_files $uri =404;
+   #}
+   #error_page 404 /404.html;
+
+   location ~ \.php$ {
+       include fastcgi_params;
+       fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+       fastcgi_pass   php:9000;
+       try_files $uri =404;
+   }
+
+   location ~ /\.(ht|svn|git) {
+       deny all;
+   }
+}
+
+server {
+   charset utf-8;
+   client_max_body_size 128M;
+   sendfile off;
+
+   listen ${NGINX_PORT};
+
+   server_name back.${NGINX_HOST};
+   root        /app/app/backend/web/;
+   index       index.php;
+
+   access_log  /app/logs/nginx/backend-access.log;
+   error_log   /app/logs/nginx/backend-error.log;
+
+   location / {
+       # Redirect everything that isn't a real file to index.php
+       try_files $uri $uri/ /index.php$is_args$args;
+   }
+
+   # uncomment to avoid processing of calls to non-existing static files by Yii
+   location ~ \.(js|css|png|jpg|jpeg|gif|swf|ico|pdf|mov|fla|zip|rar)$ {
+       try_files $uri =404;
+   }
+   #error_page 404 /404.html;
+
+   location ~ \.php$ {
+       include fastcgi_params;
+       fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+       fastcgi_pass   php:9000;
+       try_files $uri =404;
+   }
+
+   location ~ /\.(ht|svn|git) {
+       deny all;
+   }
+}
