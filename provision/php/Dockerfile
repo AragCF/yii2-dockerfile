@@ -58,6 +58,8 @@ RUN	echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/community" >> /etc/apk/repos
 		php7-pcntl \
 		php7-xmlwriter \
 		php7-xdebug \
+		nano \
+		busybox-extras \
 		&& \
 	  # Set environments
 		sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php7/php-fpm.conf && \
