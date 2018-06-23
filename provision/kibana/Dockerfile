@@ -1,3 +1,3 @@
-FROM elasticsearch:alpine
+FROM blacktop/kibana:5.6
 
 
