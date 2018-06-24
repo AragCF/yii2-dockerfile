@@ -1,4 +1,4 @@
-FROM php:7.0.30-fpm-alpine3.7
+FROM php:7.2.6-fpm-alpine
 
 RUN apk update && apk upgrade && apk add nano
 
@@ -9,8 +9,8 @@ ENV MAX_UPLOAD          50M
 ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST        100M
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/main" > /etc/apk/repositories && \
-		echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repositories
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.8/main/" > /etc/apk/repositories && \
+	echo "http://dl-cdn.alpinelinux.org/alpine/v3.8/community" >> /etc/apk/repositories 
 
 # Let's roll
 RUN	 apk update && \
@@ -25,6 +25,7 @@ RUN	 apk update && \
 	php7-dom \
 	php7-mcrypt \
 	php7-soap \
+	php7-openssl \
 	php7-gmp \
 	php7-pdo_odbc \
 	php7-json \
@@ -34,6 +35,7 @@ RUN	 apk update && \
 	php7-mysqli \
 	php7-sqlite3 \
 	php7-bcmath \
+	php7-gd \
 	php7-odbc \
 	php7-pdo_mysql \
 	php7-pdo_sqlite \
@@ -47,12 +49,18 @@ RUN	 apk update && \
 	php7-curl \
 	php7-ctype \
 	php7-fpm \
+	php7-redis \
 	php7-sockets \
+	php7-imagick \
+	php7-ssh2 \
+	php7-simplexml \
+	php7-fileinfo \
 	php7-exif \
 	php7-pcntl \
-	php7-gd \	
+	php7-xmlwriter \
 	php7-xdebug \
 	nano \
+	busybox-extras \
 	&& \
   # Set environments
 	sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php7/php-fpm.conf && \
@@ -69,7 +77,14 @@ RUN	 apk update && \
   apk del tzdata && \
   rm -rf /var/cache/apk/*
 
-RUN apk add --no-cache  --allow-untrusted \
+RUN rm /usr/local/bin/php
+RUN rm /usr/local/bin/pecl
+RUN mv /usr/bin/php /usr/bin/php.old		
+RUN ln -s /usr/bin/php7 /usr/bin/php
+RUN ln -s /usr/sbin/php-fpm7 /usr/sbin/php-fpm
+
+RUN apk add --no-cache --allow-untrusted \
+  #gnu-libiconv \
 	curl \
 	wget \
 	git \
@@ -94,15 +109,10 @@ RUN set -xe \
   $PHPIZE_DEPS \
   && sed -i 's/^exec $PHP -C -n/exec $PHP -C/g' $(which pecl) \
   && pecl channel-update pecl.php.net \
-	#&& docker-php-ext-install sockets \
-	#&& docker-php-ext-install yaml \
-	&& docker-php-ext-install event \
-	&& docker-php-ext-install redis \
-	#&& docker-php-ext-install geoip \
-  && pecl install yaml geoip-1.1.1 \
-  #&& echo "extension=geoip.so" >> $PHP_INI_DIR/conf.d/geoip.ini \
-  #&& echo "extension=yaml.so" > $PHP_INI_DIR/conf.d/01_yaml.ini \
-  #&& echo "extension=event.so" > $PHP_INI_DIR/conf.d/01_event.ini \
+  && pecl install yaml event geoip-1.1.1 \
+  && echo "extension=geoip.so" >> $PHP_INI_DIR/conf.d/geoip.ini \
+  && echo "extension=yaml.so" > $PHP_INI_DIR/conf.d/01_yaml.ini \
+  && echo "extension=event.so" > $PHP_INI_DIR/conf.d/01_event.ini \
   && wget -q https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz -P /usr/share/GeoIP/ \
   && gzip -d /usr/share/GeoIP/GeoLiteCity.dat.gz \
   && mv /usr/share/GeoIP/GeoLiteCity.dat /usr/share/GeoIP/GeoIPCity.dat \		
