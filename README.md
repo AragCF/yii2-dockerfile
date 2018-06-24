@@ -1,14 +1,14 @@
-##### Usse it
+# Use it
 
 Create alias to host machine
 
-#### MacOs
+## MacOs
 
 ```
 sudo ifconfig en0 alias 10.254.254.254 255.255.255.0
 ```
 
-#### Linux
+## Linux
 
 ```
 sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
