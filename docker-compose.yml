@@ -66,7 +66,7 @@ services:
     ports:
       - '5601:5601'
   php:
-    build: ./provision/php/7.0
+    build: ./provision/php/7.1
     restart: always
     links:
       - mariadb
@@ -82,7 +82,7 @@ services:
       - '9001'
     volumes:
       - './:/app'
-      - './provision/php/7.0/xdebug.ini:/etc/php7/conf.d/xdebug.ini'
+      - './provision/php/7.1/xdebug.ini:/etc/php7/conf.d/xdebug.ini'
       - './logs/php7:/var/log/php7'
       - './logs/php7/xdebug:/tmp/xdebug_log'
 
