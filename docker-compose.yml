@@ -72,9 +72,6 @@ services:
       - mariadb
       - redis
       - elasticsearch
-    environment:
-      - XDEBUG_CONFIG=remote_host=192.168.1.109
-      - PHP_IDE_CONFIG=serverName=skringo.loc
     ports:
       - '9001:9000'
     expose:
