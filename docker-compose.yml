@@ -77,6 +77,8 @@ services:
     expose:
       - '9000'
       - '9001'
+    environment:
+      - PHP_IDE_CONFIG=serverName=skringo.loc
     volumes:
       - './:/app'
       - './provision/php/7.1/xdebug.ini:/etc/php7/conf.d/xdebug.ini'

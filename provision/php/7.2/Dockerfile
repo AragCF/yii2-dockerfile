@@ -58,6 +58,7 @@ RUN	 apk update && \
 	php7-exif \
 	php7-pcntl \
 	php7-xmlwriter \
+	php7-posix \
 	php7-xdebug \
 	nano \
 	busybox-extras \
