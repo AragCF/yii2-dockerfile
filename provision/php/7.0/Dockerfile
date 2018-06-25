@@ -51,7 +51,8 @@ RUN	 apk update && \
 	php7-exif \
 	php7-pcntl \
 	php7-gd \
-	php7-posix \	
+	php7-posix \
+	php7-gmp \
 	php7-xdebug \
 	nano \
 	&& \
