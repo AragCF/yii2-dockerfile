@@ -60,6 +60,7 @@ RUN	 apk update && \
 	php7-pcntl \
 	php7-xmlwriter \
 	php7-posix \
+	php7-gmp \
 	php7-xdebug \
 	nano \
 	busybox-extras \
