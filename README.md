@@ -1,22 +1,26 @@
-# Use it
+# Prepare to intalation
+
+## Configure network environment
 
 Create alias to host machine
 
-## MacOs
+### MacOs
 
 ```
 sudo ifconfig en0 alias 10.254.254.254 255.255.255.0
 ```
 
-## Linux
+### Linux
 
 ```
 sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
 ```
 
-# Install services
+## Configure docker-compose.yml
 
-## Install Maria DB
+## Install services
+
+### Install Maria DB
 
 ```
   mariadb:
@@ -35,7 +39,7 @@ sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
       - './logs/mysql:/var/log/mariadb'
 ```			
 
-## Install Redis
+### Install Redis
 
 ```			
   redis:
@@ -59,7 +63,7 @@ sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
       - '8081:8081'
 ```	
 
-## Install Nginx
+### Install Nginx
 		
 ```					
   nginx:
@@ -80,12 +84,12 @@ sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
     command: 'sh -c "envsubst \"`env | awk -F = ''{printf \" $$%s\", $$1}''`\" < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g ''daemon off;''"'
 ```	
 
-### Add default host
+#### Add default host
 
 * ./provision/nginx/etc/conf.d/yii2.basic.template
 * ./provision/nginx/etc/conf.d/yii2.advanced.template
 
-## Install Elasticsearch
+### Install Elasticsearch
 
 ```				
   elasticsearch:
@@ -110,7 +114,7 @@ sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
     mem_limit: 1g
 ```			
 
-## Install Kibana
+### Install Kibana
 
 ```				
   kibana:
@@ -121,7 +125,7 @@ sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
       - '5601:5601'
 ```			
 
-## Install PHP
+### Install PHP
 
 
 ```					
@@ -147,18 +151,18 @@ sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
       - './logs/php7/xdebug:/tmp/xdebug_log'
 ```
 
-### Install php with selected version
+#### Install php with selected version
 
 * ./provision/php/7.0
 * ./provision/php/7.2
 * ./provision/php/7.3
 
-### Add xdebug configuration
+#### Add xdebug configuration
 
 * ./provision/php/7.0/xdebug.ini
 * ./provision/php/7.1/xdebug.ini
 * ./provision/php/7.2/xdebug.ini
 
-##### Other
+## Other
 
 * jenkins - https://github.com/jenkinsci/docker
