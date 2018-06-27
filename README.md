@@ -147,7 +147,7 @@ sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
       - './logs/php7/xdebug:/tmp/xdebug_log'
 ```
 
-### Insrtall php with selected version
+### Install php with selected version
 
 * ./provision/php/7.0
 * ./provision/php/7.2
