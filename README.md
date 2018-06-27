@@ -163,6 +163,11 @@ sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
 * ./provision/php/7.1/xdebug.ini
 * ./provision/php/7.2/xdebug.ini
 
+## Create Yii2 application
+
+* cd app && composer create-project --prefer-dist yiisoft/yii2-app-basic ./
+* cd app && composer create-project --prefer-dist yiisoft/yii2-advanced-basic ./
+
 ## Other
 
 * jenkins - https://github.com/jenkinsci/docker
