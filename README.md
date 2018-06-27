@@ -1,4 +1,4 @@
-# Prepare to intalation
+# Prepare to instalation
 
 ## Configure network environment
 
