@@ -48,6 +48,16 @@ services:
       - './provision/php/7.1/xdebug.ini:/etc/php7/conf.d/xdebug.ini'
       - './logs/php7:/var/log/php7'
       - './logs/php7/xdebug:/tmp/xdebug_log'
+  redis:
+    build: ./provision/redis
+    restart: always
+    environment:
+      - REDIS_VERSION=4.0.9
+    ports:
+      - '6379:6379'
+    expose:
+      - '6379'
+      
 networks:
   default:
     external:
