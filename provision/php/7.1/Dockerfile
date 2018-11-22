@@ -1,4 +1,4 @@
-FROM php:7.1.17-fpm-alpine
+FROM php:7.1.24-fpm-alpine
 
 RUN apk update && apk upgrade && apk add nano
 
