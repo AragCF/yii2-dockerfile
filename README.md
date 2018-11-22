@@ -165,6 +165,10 @@ sudo ip addr add 10.254.254.254/24 brd + dev eth0 label eth0:1
 
 #### Set xdebug configuration
 
+```bash
+$ docker-compose -f docker-compose.yml -f docker-compose-xdebug.yaml up -d
+```
+
 * ./provision/php/7.0/xdebug.ini
 * ./provision/php/7.1/xdebug.ini
 * ./provision/php/7.2/xdebug.ini

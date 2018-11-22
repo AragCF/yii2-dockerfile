@@ -45,7 +45,6 @@ services:
       - PHP_IDE_CONFIG=serverName=develop.loc
     volumes:
       - './:/app'
-      - './provision/php/7.1/xdebug.ini:/etc/php7/conf.d/xdebug.ini'
       - './logs/php7:/var/log/php7'
       - './logs/php7/xdebug:/tmp/xdebug_log'
   redis:

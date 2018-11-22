@@ -1,7 +1,5 @@
 FROM php:7.2.6-fpm-alpine
 
-RUN apk update && apk upgrade && apk add nano
-
 # Environments
 ENV TIMEZONE            Europe/Moscow
 ENV PHP_MEMORY_LIMIT    512M
@@ -39,6 +37,7 @@ RUN	 apk update && \
 	php7-odbc \
 	php7-pdo_mysql \
 	php7-pdo_sqlite \
+	php7-pdo_pgsql \
 	php7-gettext \
 	php7-xmlreader \
 	php7-xmlrpc \
@@ -62,6 +61,7 @@ RUN	 apk update && \
 	php7-gmp \
 	php7-tokenizer \
 	php7-xdebug \
+	bash \
 	nano \
 	busybox-extras \
 	&& \
