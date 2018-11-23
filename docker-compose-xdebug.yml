@@ -2,7 +2,7 @@ version: '3'
 services:
   php_os:
     volumes:
-      - './provision/php/7.2/xdebug.ini:/etc/php7/conf.d/xdebug.ini'
+      - './provision/php/7.1/xdebug.ini:/etc/php7/conf.d/xdebug.ini'
   php_core:
     volumes:
-      - './provision/php/7.2/xdebug.ini:/etc/php7/conf.d/xdebug.ini'
+      - './provision/php/7.1/xdebug.ini:/etc/php7/conf.d/xdebug.ini'
