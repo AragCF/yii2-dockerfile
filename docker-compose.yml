@@ -103,6 +103,7 @@ services:
 #      memlock:
 #        soft: -1
 #        hard: -1
+
 #
 # Visualize your Elasticsearch
 #
@@ -112,6 +113,7 @@ services:
 #      - elasticsearch
 #    ports:
 #      - '5601:5601'
+
 #
 # Network settings
 #
