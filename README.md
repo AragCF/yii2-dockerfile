@@ -178,6 +178,3 @@ $ docker-compose -f docker-compose.yml -f docker-compose-xdebug.yaml up -d
 * cd /app/app && composer create-project --prefer-dist yiisoft/yii2-app-basic ./
 * cd /app/app && composer create-project --prefer-dist yiisoft/yii2-advanced-basic ./
 
-## Other
-
-* jenkins - https://github.com/jenkinsci/docker
